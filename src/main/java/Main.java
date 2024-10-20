@@ -1,22 +1,33 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        int speed;
+        int speed =0;
+        String name = "";
         ArrayList<Car> cars = new ArrayList<>();
-        Scanner scannerName = new Scanner(System.in);
-        Scanner scannerSpeed = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         for (int i = 0; i <3; i++) {
             System.out.println("Введите имя автомобиля "+(i+1));
-            String name = scannerName.nextLine();
+            while (true){
+                name = scanner.nextLine();
+                if(!name.trim().isEmpty()){
+                    break;
+                }
+            }
             while(true){
                 System.out.println("Введите скорость автомобиля "+name);
-                speed = scannerSpeed.nextInt();
-                if(speed<=0 || speed>250){
-                    System.out.println("Скорость введена неверно");
-                }else{
-                    break;
+                if (scanner.hasNextInt()) {
+                    speed = scanner.nextInt();
+                    if(speed>0 && speed<=250){
+                        break;
+                    }else{
+                        System.out.println("Скорость введена неверно");
+                    }
+                } else {
+                    System.out.println("Некорректный ввод. Пожалуйста, введите целое число.");
+                    scanner.next();
                 }
             }
             cars.add(new Car(name,speed));
@@ -24,3 +35,5 @@ public class Main {
         System.out.println("Самая быстрая машина: " + new Race(cars).whoIsWinner());
     }
 }
+
+
